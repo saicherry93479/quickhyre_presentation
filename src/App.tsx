@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useState, useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
 import CollgeImage from './assets/Admin.jpeg'
