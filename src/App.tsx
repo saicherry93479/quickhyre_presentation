@@ -1,8 +1,13 @@
 //@ts-nocheck
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion, useAnimation } from "framer-motion";
-import CollgeImage from './assets/Admin.jpeg'
-import StudentImage from './assets/Student.jpeg'
+import CollgeImage from "./assets/Admin.jpeg";
+import CollgeOne from "./assets/CollegeOne.jpeg";
+import CollegeTwo from "./assets/CollegeTwo.jpeg";
+import CollegeThree from "./assets/CollegeThree.jpeg";
+import StudentOne from "./assets/StudentOne.jpeg";
+import { ChevronLeft } from "lucide-react";
+import StudentImage from "./assets/Student.jpeg";
 import {
   BrainCircuit,
   GraduationCap,
@@ -241,104 +246,7 @@ const App = () => {
       {/* Tabs Section */}
       <section className="relative z-10 py-20">
         <div className="container mx-auto px-4">
-          <Tabs defaultValue="colleges" className="w-full">
-            <TabsList className="w-full max-w-md mx-auto mb-8 bg-gray-800/50 p-1 rounded-full">
-              <TabsTrigger
-                value="colleges"
-                className="w-1/2 text-gray-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500 rounded-full transition-all duration-300"
-              >
-                For Colleges
-              </TabsTrigger>
-              <TabsTrigger
-                value="students"
-                className="w-1/2 text-gray-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-blue-500 rounded-full transition-all duration-300"
-              >
-                For Students
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="colleges" className="focus:outline-none">
-              <div className="grid md:grid-cols-2 gap-8 items-center">
-                <div>
-                  <h3 className="text-3xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
-                    Navigate the Recruitment Cosmos
-                  </h3>
-                  <ul className="space-y-4">
-                    <li className="flex items-start">
-                      <ChevronRight className="h-6 w-6 text-blue-400 mr-2 flex-shrink-0" />
-                      <span>
-                        Mission Control: Centralized dashboard for all placement
-                        activities
-                      </span>
-                    </li>
-                    <li className="flex items-start">
-                      <ChevronRight className="h-6 w-6 text-blue-400 mr-2 flex-shrink-0" />
-                      <span>
-                        Warp-Speed Communication: Automated scheduling and
-                        messaging tools
-                      </span>
-                    </li>
-                    <li className="flex items-start">
-                      <ChevronRight className="h-6 w-6 text-blue-400 mr-2 flex-shrink-0" />
-                      <span>
-                        Stellar Insights: Real-time analytics on student
-                        performance and placement trends
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg transform rotate-3 opacity-20 blur-lg"></div>
-                  <img
-                    src={CollgeImage}
-                    alt="College dashboard"
-                    className="relative z-10 rounded-lg shadow-xl border border-blue-500/20 w-full h-auto"
-                  />
-                </div>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="students" className="focus:outline-none">
-              <div className="grid md:grid-cols-2 gap-8 items-center">
-                <div className="order-2 md:order-1 relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg transform -rotate-3 opacity-20 blur-lg"></div>
-                  <img
-                    src={StudentImage}
-                    alt="Student interface"
-                    className="relative z-10 rounded-lg shadow-xl border border-blue-500/20 w-full h-auto"
-                  />
-                </div>
-                <div className="order-1 md:order-2">
-                  <h3 className="text-3xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400">
-                    Launch Your Career into the Stratosphere
-                  </h3>
-                  <ul className="space-y-4">
-                    <li className="flex items-start">
-                      <ChevronRight className="h-6 w-6 text-purple-400 mr-2 flex-shrink-0" />
-                      <span>
-                        Cosmic Matchmaking: Personalized job recommendations
-                        based on your unique constellation of skills
-                      </span>
-                    </li>
-                    <li className="flex items-start">
-                      <ChevronRight className="h-6 w-6 text-purple-400 mr-2 flex-shrink-0" />
-                      <span>
-                        Quantum Resume Builder: AI-powered tools to create
-                        out-of-this-world resumes
-                      </span>
-                    </li>
-                    <li className="flex items-start">
-                      <ChevronRight className="h-6 w-6 text-purple-400 mr-2 flex-shrink-0" />
-                      <span>
-                        Intergalactic Opportunities: Access to exclusive job
-                        openings and internships across the universe
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </TabsContent>
-          </Tabs>
+          <TabsSection></TabsSection>
         </div>
       </section>
 
@@ -468,3 +376,232 @@ const App = () => {
 };
 
 export default App;
+
+const TabsSection = () => {
+  // States for both college and student image carousels
+  const [collegeIndex, setCollegeIndex] = useState(0);
+  const [studentIndex, setStudentIndex] = useState(0);
+
+  // Arrays of images for both sections
+  const collegeImages = [CollgeImage, CollegeThree, CollegeTwo, CollgeOne];
+
+  const studentImages = [StudentImage, StudentOne];
+
+  // Navigation functions for college images
+  const nextCollegeSlide = useCallback(() => {
+    setCollegeIndex((prev) =>
+      prev === collegeImages.length - 1 ? 0 : prev + 1
+    );
+  }, [collegeImages.length]);
+
+  const prevCollegeSlide = () => {
+    setCollegeIndex((prev) =>
+      prev === 0 ? collegeImages.length - 1 : prev - 1
+    );
+  };
+
+  // Navigation functions for student images
+  const nextStudentSlide = useCallback(() => {
+    setStudentIndex((prev) =>
+      prev === studentImages.length - 1 ? 0 : prev + 1
+    );
+  }, [studentImages.length]);
+
+  const prevStudentSlide = () => {
+    setStudentIndex((prev) =>
+      prev === 0 ? studentImages.length - 1 : prev - 1
+    );
+  };
+
+  // Auto-scroll effects
+  useEffect(() => {
+    const collegeTimer = setInterval(nextCollegeSlide, 5000);
+    const studentTimer = setInterval(nextStudentSlide, 5000);
+
+    return () => {
+      clearInterval(collegeTimer);
+      clearInterval(studentTimer);
+    };
+  }, [nextCollegeSlide, nextStudentSlide]);
+
+  return (
+    <Tabs defaultValue="colleges" className="w-full">
+      <TabsList className="w-full max-w-md mx-auto mb-8 bg-gray-800/50 p-1 rounded-full">
+        <TabsTrigger
+          value="colleges"
+          className="w-1/2 text-gray-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500 rounded-full transition-all duration-300"
+        >
+          For Colleges
+        </TabsTrigger>
+        <TabsTrigger
+          value="students"
+          className="w-1/2 text-gray-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-blue-500 rounded-full transition-all duration-300"
+        >
+          For Students
+        </TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="colleges" className="focus:outline-none">
+        <div className="grid md:grid-cols-2 gap-8 items-center">
+          <div>
+            <h3 className="text-3xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
+              Navigate the Recruitment Cosmos
+            </h3>
+            <ul className="space-y-4">
+              <li className="flex items-start">
+                <ChevronRight className="h-6 w-6 text-blue-400 mr-2 flex-shrink-0" />
+                <span>
+                  Mission Control: Centralized dashboard for all placement
+                  activities
+                </span>
+              </li>
+              <li className="flex items-start">
+                <ChevronRight className="h-6 w-6 text-blue-400 mr-2 flex-shrink-0" />
+                <span>
+                  Warp-Speed Communication: Automated scheduling and messaging
+                  tools
+                </span>
+              </li>
+              <li className="flex items-start">
+                <ChevronRight className="h-6 w-6 text-blue-400 mr-2 flex-shrink-0" />
+                <span>
+                  Stellar Insights: Real-time analytics on student performance
+                  and placement trends
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg transform rotate-3 opacity-20 blur-lg"></div>
+            <div className="relative overflow-hidden rounded-lg">
+              <div
+                className="flex transition-transform duration-500 ease-in-out"
+                style={{ transform: `translateX(-${collegeIndex * 100}%)` }}
+              >
+                {collegeImages.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image}
+                    alt={`College dashboard ${index + 1}`}
+                    className="relative z-10 rounded-lg shadow-xl border border-blue-500/20 w-full h-auto flex-shrink-0"
+                  />
+                ))}
+              </div>
+              {/* Navigation Buttons */}
+              <button
+                onClick={prevCollegeSlide}
+                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all z-20"
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="h-6 w-6" />
+              </button>
+              <button
+                onClick={nextCollegeSlide}
+                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all z-20"
+                aria-label="Next image"
+              >
+                <ChevronRight className="h-6 w-6" />
+              </button>
+              {/* Indicators */}
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-20">
+                {collegeImages.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCollegeIndex(index)}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      collegeIndex === index
+                        ? "bg-blue-500 w-4"
+                        : "bg-gray-300 hover:bg-gray-400"
+                    }`}
+                    aria-label={`Go to image ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </TabsContent>
+
+      <TabsContent value="students" className="focus:outline-none">
+        <div className="grid md:grid-cols-2 gap-8 items-center">
+          <div className="order-2 md:order-1 relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg transform -rotate-3 opacity-20 blur-lg"></div>
+            <div className="relative overflow-hidden rounded-lg">
+              <div
+                className="flex transition-transform duration-500 ease-in-out"
+                style={{ transform: `translateX(-${studentIndex * 100}%)` }}
+              >
+                {studentImages.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image}
+                    alt={`Student interface ${index + 1}`}
+                    className="relative z-10 rounded-lg shadow-xl border border-blue-500/20 w-full h-auto flex-shrink-0"
+                  />
+                ))}
+              </div>
+              {/* Navigation Buttons */}
+              <button
+                onClick={prevStudentSlide}
+                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all z-20"
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="h-6 w-6" />
+              </button>
+              <button
+                onClick={nextStudentSlide}
+                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all z-20"
+                aria-label="Next image"
+              >
+                <ChevronRight className="h-6 w-6" />
+              </button>
+              {/* Indicators */}
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-20">
+                {studentImages.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setStudentIndex(index)}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      studentIndex === index
+                        ? "bg-purple-500 w-4"
+                        : "bg-gray-300 hover:bg-gray-400"
+                    }`}
+                    aria-label={`Go to image ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className="order-1 md:order-2">
+            <h3 className="text-3xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400">
+              Launch Your Career into the Stratosphere
+            </h3>
+            <ul className="space-y-4">
+              <li className="flex items-start">
+                <ChevronRight className="h-6 w-6 text-purple-400 mr-2 flex-shrink-0" />
+                <span>
+                  Cosmic Matchmaking: Personalized job recommendations based on
+                  your unique constellation of skills
+                </span>
+              </li>
+              <li className="flex items-start">
+                <ChevronRight className="h-6 w-6 text-purple-400 mr-2 flex-shrink-0" />
+                <span>
+                  Quantum Resume Builder: AI-powered tools to create
+                  out-of-this-world resumes
+                </span>
+              </li>
+              <li className="flex items-start">
+                <ChevronRight className="h-6 w-6 text-purple-400 mr-2 flex-shrink-0" />
+                <span>
+                  Intergalactic Opportunities: Access to exclusive job openings
+                  and internships across the universe
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </TabsContent>
+    </Tabs>
+  );
+};
